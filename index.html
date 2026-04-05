@@ -6,12 +6,30 @@
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>Sweet Alert Stylish UI</title>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAf3VzBzMZMKgavItVamn2b2RvJuTBD78A",
+    authDomain: "shahbaz-ai-project.firebaseapp.com",
+    projectId: "shahbaz-ai-project",
+    storageBucket: "shahbaz-ai-project.firebasestorage.app",
+    messagingSenderId: "99526892853",
+    appId: "1:99526892853:web:dfcd167cbb60426025407c"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&amp;display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <!-- SweetAlert -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
     function toggleTheme() {
       document.body.classList.toggle("dark");
       if (document.body.classList.contains("dark")) {
@@ -924,10 +942,10 @@
     }
   </script>
   <script>
-    function updateCount() {
-      let allData = JSON.parse(localStorage.getItem("users")) || [];
-      document.getElementById("totalUsers").innerText = allData.length;
-    }
+    async function updateCount() {
+  let snapshot = await getDocs(collection(db, "users"));
+  document.getElementById("totalUsers").innerText = snapshot.size;
+}
 
     function toggleTheme() {
       document.body.classList.toggle("dark");
@@ -1028,14 +1046,25 @@
       });
     }
 
-    function exportData() {
-      let data = localStorage.getItem("users");
-      let blob = new Blob([data], { type: "application/json" });
-      let a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "users.json";
-      a.click();
-    }
+    async function exportData() {
+
+  let snapshot = await db.collection("users").get();
+
+  let data = [];
+
+  snapshot.forEach((doc) => {
+    data.push({ id: doc.id, ...doc.data() });
+  });
+
+  let blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json",
+  });
+
+  let a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "users.json";
+  a.click();
+}
 
     function showForm() {
       document.getElementById("home").style.display = "none";
@@ -1056,167 +1085,109 @@
       document.getElementById("imageContainer").style.display = "none";
     }
 
-    function saveData() {
-      let data = {
-        name: document.getElementById("name").value,
-        age: document.getElementById("age").value,
-        about: document.getElementById("about").value,
-        phone: document.getElementById("phone").value,
-        address: document.getElementById("address").value,
-        email: document.getElementById("email").value,
-      };
+    async function saveData() {
 
-      let allData = JSON.parse(localStorage.getItem("users")) || [];
+  let data = {
+    name: document.getElementById("name").value,
+    age: document.getElementById("age").value,
+    about: document.getElementById("about").value,
+    phone: document.getElementById("phone").value,
+    address: document.getElementById("address").value,
+    email: document.getElementById("email").value,
+  };
 
-      if (editIndex >= 0) {
-        // UPDATE
-        allData[editIndex] = data;
+  Swal.fire({
+    title: "Saving...",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
+  });
 
-        // 🔥 IMPORTANT FIX
-        localStorage.setItem("users", JSON.stringify(allData));
+  
+  if (editId) {
+  await db.collection("users").doc(editId).update(data);
+  editId = null;
+} else {
+  await db.collection("users").add(data);
+}
 
-        editIndex = -1;
+  Swal.fire({
+    title: "Saved ✅",
+    text: "Data Firebase me save ho gaya",
+    icon: "success",
+  });
 
-        Swal.fire("Updated ✅", "Data updated successfully", "success");
-        confettiBlast();
+  loadData(); // 🔥 important
+}
 
-        document.getElementById("saveBtn").innerHTML =
-          '<i class="fa-solid fa-save"></i> Save';
-      } else {
-        // ADD
-        allData.push(data);
+    async function loadData() {
 
-        Swal.fire({
-          title: "Saving...",
-          allowOutsideClick: false,
-          didOpen: () => Swal.showLoading(),
-        });
+  let snapshot = await db.collection("users").get();
 
-        setTimeout(() => {
-          localStorage.setItem("users", JSON.stringify(allData));
+  let html = "";
 
-          Swal.fire({
-            title: "Saved ✅",
-            text: "Data added successfully",
-            icon: "success",
-          });
-        }, 1500);
-      }
+  snapshot.forEach((docu) => {
+    let d = docu.data();
+    let id = docu.id;
 
-      document
-        .querySelectorAll("#formContainer input")
-        .forEach((i) => (i.value = ""));
+    html += `
+      <div style="margin:10px;padding:15px;background:rgba(255,255,255,0.1);border-radius:15px;text-align:left;">
+
+        <h3>${d.name} (${d.age})</h3>
+
+        <p>${d.about || ""}</p>
+
+        <button onclick="deleteData('${id}')" class="btn danger-btn">Delete</button>
+        <button onclick="editData('${id}')" class="btn success-btn">Edit</button>
+
+      </div>
+    `;
+  });
+
+  document.getElementById("dataList").innerHTML =
+    html || "<i class='fa-solid fa-face-sad-tear'></i> No Data Found";
+}
+
+    
+
+async function deleteData(id) {
+  Swal.fire({
+    title: "Delete this record?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, Delete",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      await db.collection("users").doc(id).delete();
+      loadData();
+      Swal.fire("Deleted!", "", "success");
     }
-
-    function loadData() {
-      let allData = JSON.parse(localStorage.getItem("users")) || [];
-      let acc = JSON.parse(localStorage.getItem("account")) || {};
-      let html = "";
-
-      allData.forEach((d, i) => {
-        // 🔥 Avatar logic
-        let avatarHTML = "";
-
-        if (acc.avatar) {
-          avatarHTML = `
-        <img src="${acc.avatar}" 
-          style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
-      `;
-        } else {
-          let letter = (acc.username || "U").charAt(0).toUpperCase();
-
-          avatarHTML = `
-        <div style="
-          width:40px;
-          height:40px;
-          border-radius:50%;
-          background:linear-gradient(135deg,#00c9a7,#4facfe);
-          display:inline-flex;
-          align-items:center;
-          justify-content:center;
-          color:#fff;
-          font-weight:bold;
-          margin-right:10px;
-        ">
-          ${letter}
-        </div>
-      `;
-        }
-
-        html += `
-          <div style="margin:10px;padding:15px;background:rgba(255,255,255,0.1);border-radius:15px;text-align:left;">
-
-            <h3 style="display:flex;align-items:center;">
-              ${avatarHTML}
-              ${d.name} (${d.age})
-            </h3>
-
-            <p><i class="fa-solid fa-circle-info"></i> ${d.about}</p>
-            <p><i class="fa-solid fa-phone"></i> ${d.phone}</p>
-            <p><i class="fa-solid fa-location-dot"></i> ${d.address}</p>
-            <p><i class="fa-solid fa-envelope"></i> ${d.email}</p>
-
-            <button class="btn success-btn" onclick="editData(${i})">
-              <i class="fa-solid fa-pen"></i> Edit
-            </button>
-
-            <button class="btn danger-btn" onclick="deleteData(${i})">
-              <i class="fa-solid fa-trash"></i> Delete
-            </button>
-
-          </div>
-        `;
-      });
-
-      updateCount();
-
-      document.getElementById("dataList").innerHTML =
-        html || "<i class='fa-solid fa-face-sad-tear'></i> No Data Found";
-    }
-
-    function deleteData(index) {
-      let allData = JSON.parse(localStorage.getItem("users")) || [];
-
-      Swal.fire({
-        title: "Delete this record?",
-        text: "This action cannot be undone!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, Delete",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          allData.splice(index, 1);
-          localStorage.setItem("users", JSON.stringify(allData));
-          loadData();
-
-          Swal.fire("Deleted!", "Record removed successfully", "success");
-        }
-      });
-    }
+  });
+}
 
     let editIndex = -1;
+    let editId = null;
 
-    function editData(index) {
-      let allData = JSON.parse(localStorage.getItem("users")) || [];
-      let d = allData[index];
+    async function editData(id) {
 
-      document.getElementById("name").value = d.name;
-      document.getElementById("age").value = d.age;
-      document.getElementById("about").value = d.about;
-      document.getElementById("phone").value = d.phone;
-      document.getElementById("address").value = d.address;
-      document.getElementById("email").value = d.email;
+  let docSnap = await db.collection("users").doc(id).get();
+  let d = docSnap.data();
 
-      editIndex = index;
+  document.getElementById("name").value = d.name;
+  document.getElementById("age").value = d.age;
+  document.getElementById("about").value = d.about;
+  document.getElementById("phone").value = d.phone;
+  document.getElementById("address").value = d.address;
+  document.getElementById("email").value = d.email;
 
-      document.getElementById("listContainer").style.display = "none";
+  editId = id;
 
-      // 👇 Button text change
-      document.getElementById("saveBtn").innerHTML =
-        '<i class="fa-solid fa-pen"></i> Update';
+  document.getElementById("listContainer").style.display = "none";
 
-      showForm();
-    }
+  document.getElementById("saveBtn").innerHTML =
+    '<i class="fa-solid fa-pen"></i> Update';
+
+  showForm();
+}
 
     function askName() {
       let oldName = localStorage.getItem("userName") || "";
