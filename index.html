@@ -1,616 +1,646 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sweet Alert Stylish UI</title>
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Sweet Alert Stylish UI</title>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyAf3VzBzMZMKgavItVamn2b2RvJuTBD78A",
+        authDomain: "shahbaz-ai-project.firebaseapp.com",
+        projectId: "shahbaz-ai-project",
+        storageBucket: "shahbaz-ai-project.firebasestorage.app",
+        messagingSenderId: "99526892853",
+        appId: "1:99526892853:web:dfcd167cbb60426025407c",
+      };
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAf3VzBzMZMKgavItVamn2b2RvJuTBD78A",
-    authDomain: "shahbaz-ai-project.firebaseapp.com",
-    projectId: "shahbaz-ai-project",
-    storageBucket: "shahbaz-ai-project.firebasestorage.app",
-    messagingSenderId: "99526892853",
-    appId: "1:99526892853:web:dfcd167cbb60426025407c"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-</script>
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&amp;display=swap" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-  <!-- SweetAlert -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script>
-    function toggleTheme() {
-      document.body.classList.toggle("dark");
-      if (document.body.classList.contains("dark")) {
-        localStorage.setItem("theme", "dark");
-      } else {
-        localStorage.setItem("theme", "light");
-      }
-    }
-
-    window.addEventListener("load", function () {
-      if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark");
-      }
-    });
-  </script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
-    }
-
-    body {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-    }
-
-    /* Card container */
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(15px);
-      padding: 50px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      color: #fff;
-    }
-
-    /* Heading */
-    .container h1 {
-      margin-bottom: 25px;
-      font-weight: 600;
-    }
-
-    /* Buttons */
-    .btn {
-      padding: 12px 25px;
-      margin: 10px;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: 0.3s;
-      transform: scale(1);
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Success button */
-    .success-btn {
-      background: linear-gradient(135deg, #00c9a7, #4facfe);
-      color: white;
-    }
-
-    /* Delete button */
-    .danger-btn {
-      background: linear-gradient(135deg, #ff4b5c, #ff6a00);
-      color: white;
-    }
-
-    /* Hover effect */
-    .btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Glass effect popup */
-    .swal2-popup {
-      border-radius: 20px !important;
-      backdrop-filter: blur(15px) !important;
-      background: rgba(255, 255, 255, 0.1) !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Title styling */
-    .swal2-title {
-      color: #fff !important;
-      font-weight: 600;
-    }
-
-    /* Text */
-    .swal2-html-container {
-      color: #eee !important;
-    }
-
-    /* Confirm button gradient */
-    .swal2-confirm {
-      background: linear-gradient(135deg, #00c9a7, #4facfe) !important;
-      border: none !important;
-      border-radius: 25px !important;
-      padding: 10px 25px !important;
-      font-weight: 500;
-    }
-
-    /* Cancel button */
-    .swal2-cancel {
-      background: linear-gradient(135deg, #ff4b5c, #ff6a00) !important;
-      border-radius: 25px !important;
-      padding: 10px 25px !important;
-    }
-
-    /* Hover effect */
-    .swal2-confirm:hover,
-    .swal2-cancel:hover {
-      transform: scale(1.05);
-    }
-
-    /* Tablet */
-    @media (max-width: 768px) {
-      .container {
-        width: 90%;
-        padding: 30px;
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+    </script>
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      function toggleTheme() {
+        document.body.classList.toggle("dark");
+        if (document.body.classList.contains("dark")) {
+          localStorage.setItem("theme", "dark");
+        } else {
+          localStorage.setItem("theme", "light");
+        }
       }
 
-      .container h1 {
-        font-size: 22px;
+      window.addEventListener("load", function () {
+        if (localStorage.getItem("theme") === "dark") {
+          document.body.classList.add("dark");
+        }
+      });
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
       }
 
-      .btn {
-        width: 100%;
-        margin: 8px 0;
-        font-size: 15px;
-      }
-    }
-
-    /* Mobile */
-    @media (max-width: 480px) {
       body {
-        padding: 15px;
-        align-items: flex-start;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #667eea, #764ba2);
       }
 
+      /* Card container */
       .container {
-        width: 100%;
-        padding: 25px;
-        margin-top: 30px;
-        border-radius: 15px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        padding: 50px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        color: #fff;
       }
 
+      /* Heading */
       .container h1 {
-        font-size: 20px;
+        margin-bottom: 25px;
+        font-weight: 600;
       }
 
-      .container p {
-        font-size: 14px;
+      /* Buttons */
+      .btn {
+        padding: 12px 25px;
+        margin: 10px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+        transform: scale(1);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Success button */
+      .success-btn {
+        background: linear-gradient(135deg, #00c9a7, #4facfe);
+        color: white;
+      }
+
+      /* Delete button */
+      .danger-btn {
+        background: linear-gradient(135deg, #ff4b5c, #ff6a00);
+        color: white;
+      }
+
+      /* Hover effect */
+      .btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Glass effect popup */
+      .swal2-popup {
+        border-radius: 20px !important;
+        backdrop-filter: blur(15px) !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Title styling */
+      .swal2-title {
+        color: #fff !important;
+        font-weight: 600;
+      }
+
+      /* Text */
+      .swal2-html-container {
+        color: #eee !important;
+      }
+
+      /* Confirm button gradient */
+      .swal2-confirm {
+        background: linear-gradient(135deg, #00c9a7, #4facfe) !important;
+        border: none !important;
+        border-radius: 25px !important;
+        padding: 10px 25px !important;
+        font-weight: 500;
+      }
+
+      /* Cancel button */
+      .swal2-cancel {
+        background: linear-gradient(135deg, #ff4b5c, #ff6a00) !important;
+        border-radius: 25px !important;
+        padding: 10px 25px !important;
+      }
+
+      /* Hover effect */
+      .swal2-confirm:hover,
+      .swal2-cancel:hover {
+        transform: scale(1.05);
+      }
+
+      /* Tablet */
+      @media (max-width: 768px) {
+        .container {
+          width: 90%;
+          padding: 30px;
+        }
+
+        .container h1 {
+          font-size: 22px;
+        }
+
+        .btn {
+          width: 100%;
+          margin: 8px 0;
+          font-size: 15px;
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 480px) {
+        body {
+          padding: 15px;
+          align-items: flex-start;
+        }
+
+        .container {
+          width: 100%;
+          padding: 25px;
+          margin-top: 30px;
+          border-radius: 15px;
+        }
+
+        .container h1 {
+          font-size: 20px;
+        }
+
+        .container p {
+          font-size: 14px;
+          margin-bottom: 15px;
+        }
+
+        .btn {
+          width: 100%;
+          padding: 12px;
+          font-size: 14px;
+        }
+      }
+
+      /* New Input UI */
+      .input-group {
+        position: relative;
+        margin: 10px 0;
+      }
+
+      .input-group i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ddd;
+      }
+
+      .input-group input {
+        padding-left: 40px !important;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+
+      .input-group input:focus {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      }
+
+      /* Magic fall animation */
+      @keyframes dropFall {
+        0% {
+          transform: rotate(0deg) translateY(0);
+        }
+
+        20% {
+          transform: rotate(10deg) translateY(20px);
+        }
+
+        40% {
+          transform: rotate(-8deg) translateY(60px);
+        }
+
+        60% {
+          transform: rotate(12deg) translateY(120px);
+        }
+
+        80% {
+          transform: rotate(-5deg) translateY(200px);
+        }
+
+        100% {
+          transform: rotate(20deg) translateY(300px);
+        }
+      }
+
+      .fall {
+        animation: dropFall 1s ease-in forwards;
+      }
+
+      /* Toggle Switch */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 30px;
         margin-bottom: 15px;
       }
 
-      .btn {
-        width: 100%;
-        padding: 12px;
-        font-size: 14px;
-      }
-    }
-
-    /* New Input UI */
-    .input-group {
-      position: relative;
-      margin: 10px 0;
-    }
-
-    .input-group i {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #ddd;
-    }
-
-    .input-group input {
-      padding-left: 40px !important;
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-    }
-
-    .input-group input:focus {
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-    }
-
-    /* Magic fall animation */
-    @keyframes dropFall {
-      0% {
-        transform: rotate(0deg) translateY(0);
+      .switch input {
+        display: none;
       }
 
-      20% {
-        transform: rotate(10deg) translateY(20px);
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        background: #ccc;
+        border-radius: 30px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transition: 0.4s;
       }
 
-      40% {
-        transform: rotate(-8deg) translateY(60px);
+      .slider:before {
+        content: "";
+        position: absolute;
+        height: 24px;
+        width: 24px;
+        left: 3px;
+        bottom: 3px;
+        background: white;
+        border-radius: 50%;
+        transition: 0.4s;
       }
 
-      60% {
-        transform: rotate(12deg) translateY(120px);
+      /* ON state */
+      input:checked + .slider {
+        background: linear-gradient(135deg, #00c9a7, #4facfe);
       }
 
-      80% {
-        transform: rotate(-5deg) translateY(200px);
+      input:checked + .slider:before {
+        transform: translateX(30px);
       }
 
-      100% {
-        transform: rotate(20deg) translateY(300px);
+      .dark {
+        background: #111;
       }
-    }
 
-    .fall {
-      animation: dropFall 1s ease-in forwards;
-    }
-
-    /* Toggle Switch */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 30px;
-      margin-bottom: 15px;
-    }
-
-    .switch input {
-      display: none;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      background: #ccc;
-      border-radius: 30px;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      transition: 0.4s;
-    }
-
-    .slider:before {
-      content: "";
-      position: absolute;
-      height: 24px;
-      width: 24px;
-      left: 3px;
-      bottom: 3px;
-      background: white;
-      border-radius: 50%;
-      transition: 0.4s;
-    }
-
-    /* ON state */
-    input:checked+.slider {
-      background: linear-gradient(135deg, #00c9a7, #4facfe);
-    }
-
-    input:checked+.slider:before {
-      transform: translateX(30px);
-    }
-
-    .dark {
-      background: #111;
-    }
-
-    .swal2-popup {
-      width: 90% !important;
-      max-width: 400px;
-    }
-
-    .swal2-input {
-      width: 100% !important;
-      margin: 10px 0 !important;
-      box-sizing: border-box;
-    }
-
-    @media (max-width: 480px) {
       .swal2-popup {
-        padding: 15px !important;
+        width: 90% !important;
+        max-width: 400px;
       }
-    }
 
-    #chatBox p {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 8px 12px;
-      border-radius: 10px;
-      margin: 5px 0;
-    }
-
-    /* DARK MODE FIX */
-    body.dark {
-      background: #111 !important;
-      color: #fff;
-    }
-
-    body.dark .container {
-      background: rgba(0, 0, 0, 0.6);
-      color: #fff;
-    }
-
-    body.dark input,
-    body.dark textarea {
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
-
-
-
-    /* SOFT DARK MODE */
-    body.dark {
-      background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
-      color: #eaeaea;
-    }
-
-    body.dark .container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      color: #fff;
-    }
-
-    body.dark input,
-    body.dark textarea {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-
-
-    /* FINAL SAFE DARK MODE */
-    body.dark {
-      background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
-      color: #eaeaea;
-    }
-
-    body.dark .container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      color: #fff;
-    }
-
-    body.dark input,
-    body.dark textarea {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    /* SAFE DARK MODE FINAL */
-    body.dark {
-      background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
-      color: #eaeaea;
-    }
-
-    body.dark .container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      color: #fff;
-    }
-
-    body.dark input,
-    body.dark textarea {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-  </style>
-</head>
-
-<body>
-  <!-- ADD THIS inside body, replace container div -->
-  <div class="container" id="loginContainer">
-    <h1>Login</h1>
-    <div class="input-group">
-      <i class="fa-solid fa-user"></i>
-      <input class="btn" id="loginUser" placeholder="Username" type="text" />
-    </div>
-    <div class="input-group">
-      <i class="fa-solid fa-lock"></i>
-      <input class="btn" id="loginPass" placeholder="Password" type="password" />
-    </div>
-    <button class="btn success-btn" id="authBtn" onclick="login()">
-      Login
-    </button>
-    <button class="btn danger-btn" onclick="forgotPassword()">
-      <i class="fa-solid fa-unlock"></i> Forgot Password
-    </button>
-    <button class="btn danger-btn" onclick="showSignup()">
-      Create Account
-    </button>
-  </div>
-  <div class="container" id="home">
-    <div id="profileBox" style="margin-bottom: 15px"></div>
-    <h3 id="greeting"></h3>
-    <h4 id="clock"></h4>
-    <label class="switch">
-      <input onclick="toggleTheme()" type="checkbox" />
-      <span class="slider"></span>
-    </label>
-    <button class="btn" onclick="changeBg()">🎨 Change Theme</button>
-    <button class="btn success-btn" onclick="openChat()">
-      <i class="fa-solid fa-robot"></i> AI Chat
-    </button>
-    <button class="btn danger-btn" onclick="logout()">
-      <i class="fa-solid fa-right-from-bracket"></i> Logout
-    </button>
-    <h1>Welcome <span id="userName">Guest</span> this is your website</h1>
-    <h3>Total Users: <span id="totalUsers">0</span></h3>
-    <p>Click buttons to see magic</p>
-    <button class="btn danger-btn" onclick="changeName()">
-      <i class="fa-solid fa-user-pen"></i> Change Name
-    </button>
-    <button class="btn success-btn" onclick="showAlert()">
-      <i class="fa-solid fa-check"></i> Show Success
-    </button>
-    <button class="btn danger-btn" onclick="confirmDelete()">
-      <i class="fa-solid fa-trash"></i> Delete Item
-    </button>
-    <button class="btn success-btn" onclick="showToast()">
-      <i class="fa-solid fa-bell"></i> Show Toast
-    </button>
-    <button class="btn success-btn" onclick="showLoader()">
-      <i class="fa-solid fa-spinner"></i> Show Loader
-    </button>
-    <hr style="margin: 20px 0" />
-    <button class="btn danger-btn" id="magicBtn" onclick="magicDrop()">
-      <i class="fa-solid fa-wand-magic-sparkles"></i> Magic
-    </button>
-    <button class="btn success-btn" onclick="showForm()">
-      <i class="fa-solid fa-user-plus"></i> Add Detail
-    </button>
-    <button class="btn success-btn" onclick="showList()">
-      <i class="fa-solid fa-list"></i> View List
-    </button>
-    <button class="btn success-btn" onclick="uploadProfilePic()">
-      <i class="fa-solid fa-image"></i> Set Profile Photo
-    </button>
-    <button class="btn success-btn" onclick="showImageForm()">
-      <i class="fa-solid fa-image"></i> Image Upload
-    </button>
-    
-    <button class="btn danger-btn" onclick="changePassword()">
-      <i class="fa-solid fa-key"></i> Change Password
-    </button>
-  </div>
-  <!-- FORM CONTAINER -->
-  <div class="container" id="formContainer" style="display: none">
-    <h1>Add Detail</h1>
-    <div class="input-group">
-      <i class="fa-solid fa-user"></i>
-      <input class="btn" id="name" placeholder="Name" type="text" />
-    </div>
-    <div class="input-group">
-      <i class="fa-solid fa-cake-candles"></i>
-      <input class="btn" id="age" placeholder="Age" type="number" />
-    </div>
-    <div class="input-group">
-      <i class="fa-solid fa-circle-info"></i>
-      <input class="btn" id="about" placeholder="About Me" type="text" />
-    </div>
-    <div class="input-group">
-      <i class="fa-solid fa-phone"></i>
-      <input class="btn" id="phone" placeholder="Phone" type="text" />
-    </div>
-    <div class="input-group">
-      <i class="fa-solid fa-location-dot"></i>
-      <input class="btn" id="address" placeholder="Address" type="text" />
-    </div>
-    <div class="input-group">
-      <i class="fa-solid fa-envelope"></i>
-      <input class="btn" id="email" placeholder="Email" type="email" />
-    </div>
-    <button class="btn success-btn" id="saveBtn" onclick="saveData()">
-      Save
-    </button>
-    <button class="btn danger-btn" onclick="goHome()">
-      <i class="fa-solid fa-arrow-left"></i> Go Back
-    </button>
-  </div>
-  <!-- LIST CONTAINER -->
-  <div class="container" id="listContainer" style="display: none">
-    <h1>Saved Data</h1>
-    <div id="dataList"></div>
-    <button class="btn danger-btn" onclick="goHome()">Go Back</button>
-  </div>
- 
-
- 
- 
-  <script>
-    function confettiBlast() {
-      for (let i = 0; i < 40; i++) {
-        let div = document.createElement("div");
-
-        div.style.position = "fixed";
-        div.style.width = "8px";
-        div.style.height = "8px";
-        div.style.background = `hsl(${Math.random() * 360},100%,50%)`;
-        div.style.top = "0";
-        div.style.left = Math.random() * window.innerWidth + "px";
-        div.style.borderRadius = "50%";
-
-        document.body.appendChild(div);
-
-        div.animate(
-          [
-            { transform: "translateY(0)" },
-            { transform: "translateY(600px)" },
-          ],
-          {
-            duration: 2000,
-            easing: "ease-out",
-          },
-        );
-
-        setTimeout(() => div.remove(), 2000);
+      .swal2-input {
+        width: 100% !important;
+        margin: 10px 0 !important;
+        box-sizing: border-box;
       }
-    }
-  </script>
-  <script>
-    function changeBg() {
-      let colors = [
-        "linear-gradient(135deg,#667eea,#764ba2)",
-        "linear-gradient(135deg,#ff9a9e,#fad0c4)",
-        "linear-gradient(135deg,#43cea2,#185a9d)",
-      ];
 
-      let random = colors[Math.floor(Math.random() * colors.length)];
-      document.body.style.background = random;
+      @media (max-width: 480px) {
+        .swal2-popup {
+          padding: 15px !important;
+        }
+      }
 
-      localStorage.setItem("bg", random);
-    }
+      #chatBox p {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 8px 12px;
+        border-radius: 10px;
+        margin: 5px 0;
+      }
 
-    // load pe
-    let savedBg = localStorage.getItem("bg");
-    if (savedBg) {
-      document.body.style.background = savedBg;
-    }
-  </script>
-  <script>
-    function startClock() {
-      setInterval(() => {
-        let now = new Date();
-        let h = now.getHours();
+      /* DARK MODE FIX */
+      body.dark {
+        background: #111 !important;
+        color: #fff;
+      }
 
-        let greet = "Good Evening 🌙";
-        if (h < 12) greet = "Good Morning ☀️";
-        else if (h < 18) greet = "Good Afternoon 🌤️";
+      body.dark .container {
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+      }
 
-        document.getElementById("greeting").innerText = greet;
-        document.getElementById("clock").innerText = now.toLocaleTimeString();
-      }, 1000);
-    }
+      body.dark input,
+      body.dark textarea {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
 
-    startClock();
-  </script>
-  <script>
-    function loadProfile() {
-      let acc = JSON.parse(localStorage.getItem("account"));
+      /* SOFT DARK MODE */
+      body.dark {
+        background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+        color: #eaeaea;
+      }
 
-      let html = "";
+      body.dark .container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        color: #fff;
+      }
 
-      if (acc.avatar) {
-        // Image avatar
-        html = `
+      body.dark input,
+      body.dark textarea {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* FINAL SAFE DARK MODE */
+      body.dark {
+        background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+        color: #eaeaea;
+      }
+
+      body.dark .container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        color: #fff;
+      }
+
+      body.dark input,
+      body.dark textarea {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* SAFE DARK MODE FINAL */
+      body.dark {
+        background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+        color: #eaeaea;
+      }
+
+      body.dark .container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        color: #fff;
+      }
+
+      body.dark input,
+      body.dark textarea {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ADD THIS inside body, replace container div -->
+    <div class="container" id="loginContainer">
+      <h1>Login</h1>
+      <div class="input-group">
+        <i class="fa-solid fa-user"></i>
+        <input class="btn" id="loginUser" placeholder="Username" type="text" />
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-lock"></i>
+        <input
+          class="btn"
+          id="loginPass"
+          placeholder="Password"
+          type="password"
+        />
+      </div>
+      <button class="btn success-btn" id="authBtn" onclick="login()">
+        Login
+      </button>
+      <button class="btn danger-btn" onclick="forgotPassword()">
+        <i class="fa-solid fa-unlock"></i> Forgot Password
+      </button>
+      <button class="btn danger-btn" onclick="showSignup()">
+        Create Account
+      </button>
+    </div>
+    <div class="container" id="home">
+      <div id="profileBox" style="margin-bottom: 15px"></div>
+      <h3 id="greeting"></h3>
+      <h4 id="clock"></h4>
+      <label class="switch">
+        <input onclick="toggleTheme()" type="checkbox" />
+        <span class="slider"></span>
+      </label>
+      <button class="btn" onclick="changeBg()">🎨 Change Theme</button>
+      <button class="btn" onclick="changeBg()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M22.2125 5.65605C21.4491 5.99375 20.6395 6.21555 19.8106 6.31411C20.6839 5.79132 21.3374 4.9689 21.6493 4.00005C20.8287 4.48761 19.9305 4.83077 18.9938 5.01461C18.2031 4.17106 17.098 3.69303 15.9418 3.69434C13.6326 3.69434 11.7597 5.56661 11.7597 7.87683C11.7597 8.20458 11.7973 8.52242 11.8676 8.82909C8.39047 8.65404 5.31007 6.99005 3.24678 4.45941C2.87529 5.09767 2.68005 5.82318 2.68104 6.56167C2.68104 8.01259 3.4196 9.29324 4.54149 10.043C3.87737 10.022 3.22788 9.84264 2.64718 9.51973C2.64654 9.5373 2.64654 9.55487 2.64654 9.57148C2.64654 11.5984 4.08819 13.2892 6.00199 13.6731C5.6428 13.7703 5.27232 13.8194 4.90022 13.8191C4.62997 13.8191 4.36771 13.7942 4.11279 13.7453C4.64531 15.4065 6.18886 16.6159 8.0196 16.6491C6.53813 17.8118 4.70869 18.4426 2.82543 18.4399C2.49212 18.4402 2.15909 18.4205 1.82812 18.3811C3.74004 19.6102 5.96552 20.2625 8.23842 20.2601C15.9316 20.2601 20.138 13.8875 20.138 8.36111C20.138 8.1803 20.1336 7.99886 20.1256 7.81997C20.9443 7.22845 21.651 6.49567 22.2125 5.65605Z"
+          ></path>
+        </svg>
+
+        <svg
+          width="50"
+          height="50"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M21.5331 7.11165C21.5483 7.32484 21.5483 7.53807 21.5483 7.75126C21.5483 14.2538 16.5991 21.7462 7.55333 21.7462C4.7665 21.7462 2.17768 20.9391 0 19.5381C0.395955 19.5838 0.776628 19.599 1.18782 19.599C3.48728 19.599 5.60407 18.8224 7.29444 17.4975C5.13199 17.4518 3.31979 16.0356 2.69542 14.0863C3.00001 14.132 3.30456 14.1624 3.62439 14.1624C4.066 14.1624 4.50766 14.1015 4.9188 13.9949C2.66499 13.538 0.974582 11.5584 0.974582 9.1675V9.10661C1.62938 9.47209 2.39087 9.70052 3.19792 9.73094C1.87304 8.84767 1.00505 7.34007 1.00505 5.63447C1.00505 4.72078 1.24866 3.88321 1.67508 3.15224C4.09642 6.13702 7.73605 8.08623 11.8172 8.29946C11.7411 7.93398 11.6954 7.55331 11.6954 7.17259C11.6954 4.46189 13.8883 2.25378 16.6142 2.25378C18.0304 2.25378 19.3096 2.84769 20.2081 3.80709C21.3198 3.5939 22.3858 3.18271 23.33 2.61927C22.9644 3.76143 22.1878 4.72082 21.1675 5.32992C22.1574 5.22337 23.1168 4.9492 24 4.56853C23.3301 5.54311 22.4924 6.4111 21.5331 7.11165Z"
+            fill="currentColor"
+          ></path>
+        </svg>
+      </button>
+      <button class="btn success-btn" onclick="openChat()">
+        <i class="fa-solid fa-robot"></i> AI Chat
+      </button>
+      <button class="btn danger-btn" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+      <h1>Welcome <span id="userName">Guest</span> this is your website</h1>
+      <h3>Total Users: <span id="totalUsers">0</span></h3>
+      <p>Click buttons to see magic</p>
+      <button class="btn danger-btn" onclick="changeName()">
+        <i class="fa-solid fa-user-pen"></i> Change Name
+      </button>
+      <button class="btn success-btn" onclick="showAlert()">
+        <i class="fa-solid fa-check"></i> Show Success
+      </button>
+      <button class="btn danger-btn" onclick="confirmDelete()">
+        <i class="fa-solid fa-trash"></i> Delete Item
+      </button>
+      <button class="btn success-btn" onclick="showToast()">
+        <i class="fa-solid fa-bell"></i> Show Toast
+      </button>
+      <button class="btn success-btn" onclick="showLoader()">
+        <i class="fa-solid fa-spinner"></i> Show Loader
+      </button>
+      <hr style="margin: 20px 0" />
+      <button class="btn danger-btn" id="magicBtn" onclick="magicDrop()">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> Magic
+      </button>
+      <button class="btn success-btn" onclick="showForm()">
+        <i class="fa-solid fa-user-plus"></i> Add Detail
+      </button>
+      <button class="btn success-btn" onclick="showList()">
+        <i class="fa-solid fa-list"></i> View List
+      </button>
+      <button class="btn success-btn" onclick="uploadProfilePic()">
+        <i class="fa-solid fa-image"></i> Set Profile Photo
+      </button>
+      <button class="btn success-btn" onclick="showImageForm()">
+        <i class="fa-solid fa-image"></i> Image Upload
+      </button>
+
+      <button class="btn danger-btn" onclick="changePassword()">
+        <i class="fa-solid fa-key"></i> Change Password
+      </button>
+    </div>
+    <!-- FORM CONTAINER -->
+    <div class="container" id="formContainer" style="display: none">
+      <h1>Add Detail</h1>
+      <div class="input-group">
+        <i class="fa-solid fa-user"></i>
+        <input class="btn" id="name" placeholder="Name" type="text" />
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-cake-candles"></i>
+        <input class="btn" id="age" placeholder="Age" type="number" />
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-circle-info"></i>
+        <input class="btn" id="about" placeholder="About Me" type="text" />
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-phone"></i>
+        <input class="btn" id="phone" placeholder="Phone" type="text" />
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-location-dot"></i>
+        <input class="btn" id="address" placeholder="Address" type="text" />
+      </div>
+      <div class="input-group">
+        <i class="fa-solid fa-envelope"></i>
+        <input class="btn" id="email" placeholder="Email" type="email" />
+      </div>
+      <button class="btn success-btn" id="saveBtn" onclick="saveData()">
+        Save
+      </button>
+      <button class="btn danger-btn" onclick="goHome()">
+        <i class="fa-solid fa-arrow-left"></i> Go Back
+      </button>
+    </div>
+    <!-- LIST CONTAINER -->
+    <div class="container" id="listContainer" style="display: none">
+      <h1>Saved Data</h1>
+      <div id="dataList"></div>
+      <button class="btn danger-btn" onclick="goHome()">Go Back</button>
+    </div>
+
+    <script>
+      function confettiBlast() {
+        for (let i = 0; i < 40; i++) {
+          let div = document.createElement("div");
+
+          div.style.position = "fixed";
+          div.style.width = "8px";
+          div.style.height = "8px";
+          div.style.background = `hsl(${Math.random() * 360},100%,50%)`;
+          div.style.top = "0";
+          div.style.left = Math.random() * window.innerWidth + "px";
+          div.style.borderRadius = "50%";
+
+          document.body.appendChild(div);
+
+          div.animate(
+            [
+              { transform: "translateY(0)" },
+              { transform: "translateY(600px)" },
+            ],
+            {
+              duration: 2000,
+              easing: "ease-out",
+            },
+          );
+
+          setTimeout(() => div.remove(), 2000);
+        }
+      }
+    </script>
+    <script>
+      function changeBg() {
+        let colors = [
+          "linear-gradient(135deg,#667eea,#764ba2)",
+          "linear-gradient(135deg,#ff9a9e,#fad0c4)",
+          "linear-gradient(135deg,#43cea2,#185a9d)",
+        ];
+
+        let random = colors[Math.floor(Math.random() * colors.length)];
+        document.body.style.background = random;
+
+        localStorage.setItem("bg", random);
+      }
+
+      // load pe
+      let savedBg = localStorage.getItem("bg");
+      if (savedBg) {
+        document.body.style.background = savedBg;
+      }
+    </script>
+    <script>
+      function startClock() {
+        setInterval(() => {
+          let now = new Date();
+          let h = now.getHours();
+
+          let greet = "Good Evening 🌙";
+          if (h < 12) greet = "Good Morning ☀️";
+          else if (h < 18) greet = "Good Afternoon 🌤️";
+
+          document.getElementById("greeting").innerText = greet;
+          document.getElementById("clock").innerText = now.toLocaleTimeString();
+        }, 1000);
+      }
+
+      startClock();
+    </script>
+    <script>
+      function loadProfile() {
+        let acc = JSON.parse(localStorage.getItem("account"));
+
+        let html = "";
+
+        if (acc.avatar) {
+          // Image avatar
+          html = `
       <img src="${acc.avatar}" 
         style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:2px solid #fff;">
     `;
-      } else {
-        // Auto avatar (first letter)
-        let letter = acc.username.charAt(0).toUpperCase();
+        } else {
+          // Auto avatar (first letter)
+          let letter = acc.username.charAt(0).toUpperCase();
 
-        html = `
+          html = `
           <div style="
             width:70px;
             height:70px;
@@ -627,509 +657,506 @@
             ${letter}
           </div>
         `;
-      }
-
-      document.getElementById("profileBox").innerHTML = html;
-    }
-  </script>
-  <script>
-    function uploadProfilePic() {
-      Swal.fire({
-        title: "Upload Profile Photo",
-        input: "file",
-        inputAttributes: {
-          accept: "image/*",
-        },
-        showCancelButton: true,
-        confirmButtonText: "Upload",
-        preConfirm: (file) => {
-          if (!file) {
-            Swal.showValidationMessage("Select image ⚠️");
-          }
-          return file;
-        },
-      }).then((res) => {
-        if (res.isConfirmed) {
-          let reader = new FileReader();
-
-          reader.onload = function (e) {
-            let acc = JSON.parse(localStorage.getItem("account"));
-            acc.avatar = e.target.result;
-
-            localStorage.setItem("account", JSON.stringify(acc));
-
-            loadProfile(); // refresh UI
-
-            Swal.fire("Updated ✅", "Profile photo saved", "success");
-          };
-
-          reader.readAsDataURL(res.value);
         }
-      });
-    }
-  </script>
-  <script>
-    function forgotPassword() {
-      Swal.fire({
-        title: "Verify Identity 🔐",
-        input: "text",
-        inputPlaceholder: "Your Pet Name?",
-        confirmButtonText: "Verify",
-        showCancelButton: true,
-        preConfirm: (answer) => {
-          let acc = JSON.parse(localStorage.getItem("account"));
 
-          if (!acc) {
-            Swal.showValidationMessage("No account found ❌");
-            return;
-          }
+        document.getElementById("profileBox").innerHTML = html;
+      }
+    </script>
+    <script>
+      function uploadProfilePic() {
+        Swal.fire({
+          title: "Upload Profile Photo",
+          input: "file",
+          inputAttributes: {
+            accept: "image/*",
+          },
+          showCancelButton: true,
+          confirmButtonText: "Upload",
+          preConfirm: (file) => {
+            if (!file) {
+              Swal.showValidationMessage("Select image ⚠️");
+            }
+            return file;
+          },
+        }).then((res) => {
+          if (res.isConfirmed) {
+            let reader = new FileReader();
 
-          if (answer !== acc.pet) {
-            Swal.showValidationMessage("Wrong answer ❌");
-            return;
-          }
-
-          return true;
-        },
-      }).then((res) => {
-        if (res.isConfirmed) {
-          // New password set
-          Swal.fire({
-            title: "Set New Password",
-            input: "password",
-            inputPlaceholder: "Enter new password",
-            confirmButtonText: "Update",
-            showCancelButton: true,
-          }).then((r) => {
-            if (r.isConfirmed) {
+            reader.onload = function (e) {
               let acc = JSON.parse(localStorage.getItem("account"));
-              acc.password = r.value;
+              acc.avatar = e.target.result;
 
               localStorage.setItem("account", JSON.stringify(acc));
 
-              Swal.fire(
-                "Success ✅",
-                "Password reset successfully",
-                "success",
-              );
-            }
-          });
-        }
-      });
-    }
-  </script>
-  <script>
-    function logout() {
-      Swal.fire({
-        title: "Enter Password to Logout",
-        input: "password",
-        inputPlaceholder: "Enter your password",
-        showCancelButton: true,
-        confirmButtonText: "Logout",
-        preConfirm: (pass) => {
-          let acc = JSON.parse(localStorage.getItem("account"));
+              loadProfile(); // refresh UI
 
-          if (pass !== acc.password) {
-            Swal.showValidationMessage("Wrong password ❌");
+              Swal.fire("Updated ✅", "Profile photo saved", "success");
+            };
+
+            reader.readAsDataURL(res.value);
           }
-          return pass;
-        },
-      }).then((res) => {
-        if (res.isConfirmed) {
-          localStorage.removeItem("isLogin");
-          showLogin();
-          Swal.fire("Logged out 👋", "", "success");
-        }
-      });
-    }
-
-    window.onload = function () {
-      let acc = localStorage.getItem("account");
-      let isLogin = localStorage.getItem("isLogin");
-
-      if (!acc) {
-        showSignup(); // first time
-      } else if (!isLogin) {
-        showLogin();
-      } else {
-        showHome();
-        loadProfile();
+        });
       }
-    };
+    </script>
+    <script>
+      function forgotPassword() {
+        Swal.fire({
+          title: "Verify Identity 🔐",
+          input: "text",
+          inputPlaceholder: "Your Pet Name?",
+          confirmButtonText: "Verify",
+          showCancelButton: true,
+          preConfirm: (answer) => {
+            let acc = JSON.parse(localStorage.getItem("account"));
 
-    function showSignup() {
-      Swal.fire({
-        title: "Create Account",
-        html: `
+            if (!acc) {
+              Swal.showValidationMessage("No account found ❌");
+              return;
+            }
+
+            if (answer !== acc.pet) {
+              Swal.showValidationMessage("Wrong answer ❌");
+              return;
+            }
+
+            return true;
+          },
+        }).then((res) => {
+          if (res.isConfirmed) {
+            // New password set
+            Swal.fire({
+              title: "Set New Password",
+              input: "password",
+              inputPlaceholder: "Enter new password",
+              confirmButtonText: "Update",
+              showCancelButton: true,
+            }).then((r) => {
+              if (r.isConfirmed) {
+                let acc = JSON.parse(localStorage.getItem("account"));
+                acc.password = r.value;
+
+                localStorage.setItem("account", JSON.stringify(acc));
+
+                Swal.fire(
+                  "Success ✅",
+                  "Password reset successfully",
+                  "success",
+                );
+              }
+            });
+          }
+        });
+      }
+    </script>
+    <script>
+      function logout() {
+        Swal.fire({
+          title: "Enter Password to Logout",
+          input: "password",
+          inputPlaceholder: "Enter your password",
+          showCancelButton: true,
+          confirmButtonText: "Logout",
+          preConfirm: (pass) => {
+            let acc = JSON.parse(localStorage.getItem("account"));
+
+            if (pass !== acc.password) {
+              Swal.showValidationMessage("Wrong password ❌");
+            }
+            return pass;
+          },
+        }).then((res) => {
+          if (res.isConfirmed) {
+            localStorage.removeItem("isLogin");
+            showLogin();
+            Swal.fire("Logged out 👋", "", "success");
+          }
+        });
+      }
+
+      window.onload = function () {
+        let acc = localStorage.getItem("account");
+        let isLogin = localStorage.getItem("isLogin");
+
+        if (!acc) {
+          showSignup(); // first time
+        } else if (!isLogin) {
+          showLogin();
+        } else {
+          showHome();
+          loadProfile();
+          updateCount();
+        }
+      };
+
+      function showSignup() {
+        Swal.fire({
+          title: "Create Account",
+          html: `
           <input type="text" id="newUser" class="swal2-input" placeholder="Username">
           <input type="password" id="newPass" class="swal2-input" placeholder="Password">
           <input type="text" id="petName" class="swal2-input" placeholder="Your Pet Name?">
         `,
-        confirmButtonText: "Signup",
-        preConfirm: () => {
-          let u = document.getElementById("newUser").value;
-          let p = document.getElementById("newPass").value;
-          let pet = document.getElementById("petName").value;
+          confirmButtonText: "Signup",
+          preConfirm: () => {
+            let u = document.getElementById("newUser").value;
+            let p = document.getElementById("newPass").value;
+            let pet = document.getElementById("petName").value;
 
-          if (!u || !p || !pet) {
-            Swal.showValidationMessage("All fields required ⚠️");
-          }
-
-          return { u, p, pet };
-        },
-      }).then((res) => {
-        if (res.isConfirmed) {
-          let acc = {
-            username: res.value.u,
-            password: res.value.p,
-            pet: res.value.pet,
-            avatar: "",
-          };
-
-          localStorage.setItem("account", JSON.stringify(acc));
-
-          Swal.fire("Account Created ✅", "Now login करें", "success");
-
-          document.getElementById("loginContainer").style.display = "block";
-          document.getElementById("signupContainer").style.display = "none";
-        }
-      });
-    }
-
-    function checkSecuritySetup() {
-      let acc = JSON.parse(localStorage.getItem("account"));
-
-      if (!acc.pet) {
-        Swal.fire({
-          title: "Security Setup 🔐",
-          input: "text",
-          inputPlaceholder: "Enter your Pet Name (for recovery)",
-          allowOutsideClick: false,
-          confirmButtonText: "Save",
-          preConfirm: (val) => {
-            if (!val) {
-              Swal.showValidationMessage("Required ⚠️");
+            if (!u || !p || !pet) {
+              Swal.showValidationMessage("All fields required ⚠️");
             }
-            return val;
+
+            return { u, p, pet };
           },
         }).then((res) => {
           if (res.isConfirmed) {
-            acc.pet = res.value;
+            let acc = {
+              username: res.value.u,
+              password: res.value.p,
+              pet: res.value.pet,
+              avatar: "",
+            };
+
             localStorage.setItem("account", JSON.stringify(acc));
 
-            Swal.fire("Saved ✅", "Security setup complete", "success");
+            Swal.fire("Account Created ✅", "Now login करें", "success");
+
+            document.getElementById("loginContainer").style.display = "block";
+            document.getElementById("signupContainer").style.display = "none";
           }
         });
       }
-    }
 
-    function showLogin() {
-      document.getElementById("loginContainer").style.display = "block";
-      document.getElementById("home").style.display = "none";
+      function checkSecuritySetup() {
+        let acc = JSON.parse(localStorage.getItem("account"));
 
-      document.querySelector("#loginContainer h1").innerText = "Login";
-
-      let btn = document.querySelector("#loginContainer button");
-      btn.innerText = "Login";
-      btn.onclick = login;
-    }
-
-    function showHome() {
-      document.getElementById("loginContainer").style.display = "none";
-      document.getElementById("home").style.display = "block";
-    }
-  </script>
-  <script>
-    function signup() {
-      let user = document.getElementById("loginUser").value;
-      let pass = document.getElementById("loginPass").value;
-
-      if (!user || !pass) {
-        Swal.fire("Error ❌", "Fill all fields", "error");
-        return;
-      }
-
-      localStorage.setItem(
-        "account",
-        JSON.stringify({ username: user, password: pass }),
-      );
-
-      Swal.fire("Account Created ✅", "Now login", "success");
-
-      showLogin();
-    }
-  </script>
-  <script>
-    function changePassword() {
-      Swal.fire({
-        title: "Change Password",
-        html: `
-          <input type="password" id="oldPass" class="swal2-input" placeholder="Old Password">
-          <input type="password" id="newPass" class="swal2-input" placeholder="New Password">
-        `,
-        confirmButtonText: "Update",
-        showCancelButton: true,
-        preConfirm: () => {
-          let oldP = document.getElementById("oldPass").value;
-          let newP = document.getElementById("newPass").value;
-
-          let acc = JSON.parse(localStorage.getItem("account"));
-
-          if (oldP !== acc.password) {
-            Swal.showValidationMessage("Old password incorrect ❌");
-          }
-
-          if (!newP) {
-            Swal.showValidationMessage("Enter new password");
-          }
-
-          return { newP };
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // 👉 Confirm popup
+        if (!acc.pet) {
           Swal.fire({
-            title: "Are you sure?",
-            text: "Do you want to change password?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes, Update",
-            cancelButtonText: "Cancel",
+            title: "Security Setup 🔐",
+            input: "text",
+            inputPlaceholder: "Enter your Pet Name (for recovery)",
+            allowOutsideClick: false,
+            confirmButtonText: "Save",
+            preConfirm: (val) => {
+              if (!val) {
+                Swal.showValidationMessage("Required ⚠️");
+              }
+              return val;
+            },
           }).then((res) => {
             if (res.isConfirmed) {
-              let acc = JSON.parse(localStorage.getItem("account"));
-              acc.password = result.value.newP;
-
+              acc.pet = res.value;
               localStorage.setItem("account", JSON.stringify(acc));
 
-              Swal.fire(
-                "Updated ✅",
-                "Password changed successfully",
-                "success",
-              );
-            } else {
-              Swal.fire("Cancelled", "No changes made", "info");
+              Swal.fire("Saved ✅", "Security setup complete", "success");
             }
           });
         }
-      });
-    }
-  </script>
-  <script>
-    // Default user (first time)
-    if (!localStorage.getItem("account")) {
-      localStorage.setItem(
-        "account",
-        JSON.stringify({ username: "admin", password: "1234" }),
-      );
-    }
-
-    function login() {
-      let user = document.getElementById("loginUser").value;
-      let pass = document.getElementById("loginPass").value;
-
-      let acc = JSON.parse(localStorage.getItem("account"));
-
-      if (user === acc.username && pass === acc.password) {
-        localStorage.setItem("isLogin", true);
-
-        Swal.fire("Login Success ✅", "", "success");
-        checkSecuritySetup();
-        showHome();
-      } else {
-        Swal.fire("Error ❌", "Invalid credentials", "error");
       }
-    }
-  </script>
-  <script>
-    async function updateCount() {
-  let snapshot = await getDocs(collection(db, "users"));
-  document.getElementById("totalUsers").innerText = snapshot.size;
-}
 
-    function toggleTheme() {
-      document.body.classList.toggle("dark");
-    }
+      function showLogin() {
+        document.getElementById("loginContainer").style.display = "block";
+        document.getElementById("home").style.display = "none";
 
-    function changeName() {
-      localStorage.removeItem("userName");
-      askName(); // same popup dubara open hoga
-    }
-  </script>
-  <script>
-    function showToast() {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        background: "rgba(0,0,0,0.7)",
-        color: "#fff",
-      });
+        document.querySelector("#loginContainer h1").innerText = "Login";
 
-      Toast.fire({
-        icon: "success",
-        title: "Action completed successfully ✅",
-      });
-    }
-  </script>
-  <script>
-    function showLoader() {
-      Swal.fire({
-        title: "Processing...",
-        text: "Please wait ⏳",
-        allowOutsideClick: false,
-        background: "rgba(255,255,255,0.1)",
-        color: "#fff",
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
+        let btn = document.querySelector("#loginContainer button");
+        btn.innerText = "Login";
+        btn.onclick = login;
+      }
 
-      // Fake delay (demo ke liye)
-      setTimeout(() => {
+      function showHome() {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("home").style.display = "block";
+      }
+    </script>
+    <script>
+      function signup() {
+        let user = document.getElementById("loginUser").value;
+        let pass = document.getElementById("loginPass").value;
+
+        if (!user || !pass) {
+          Swal.fire("Error ❌", "Fill all fields", "error");
+          return;
+        }
+
+        localStorage.setItem(
+          "account",
+          JSON.stringify({ username: user, password: pass }),
+        );
+
+        Swal.fire("Account Created ✅", "Now login", "success");
+
+        showLogin();
+      }
+    </script>
+    <script>
+      function changePassword() {
         Swal.fire({
-          title: "Done ✅",
-          text: "Process completed successfully!",
+          title: "Change Password",
+          html: `
+          <input type="password" id="oldPass" class="swal2-input" placeholder="Old Password">
+          <input type="password" id="newPass" class="swal2-input" placeholder="New Password">
+        `,
+          confirmButtonText: "Update",
+          showCancelButton: true,
+          preConfirm: () => {
+            let oldP = document.getElementById("oldPass").value;
+            let newP = document.getElementById("newPass").value;
+
+            let acc = JSON.parse(localStorage.getItem("account"));
+
+            if (oldP !== acc.password) {
+              Swal.showValidationMessage("Old password incorrect ❌");
+            }
+
+            if (!newP) {
+              Swal.showValidationMessage("Enter new password");
+            }
+
+            return { newP };
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // 👉 Confirm popup
+            Swal.fire({
+              title: "Are you sure?",
+              text: "Do you want to change password?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Yes, Update",
+              cancelButtonText: "Cancel",
+            }).then((res) => {
+              if (res.isConfirmed) {
+                let acc = JSON.parse(localStorage.getItem("account"));
+                acc.password = result.value.newP;
+
+                localStorage.setItem("account", JSON.stringify(acc));
+
+                Swal.fire(
+                  "Updated ✅",
+                  "Password changed successfully",
+                  "success",
+                );
+              } else {
+                Swal.fire("Cancelled", "No changes made", "info");
+              }
+            });
+          }
+        });
+      }
+    </script>
+    <script>
+      // Default user (first time)
+      if (!localStorage.getItem("account")) {
+        localStorage.setItem(
+          "account",
+          JSON.stringify({ username: "admin", password: "1234" }),
+        );
+      }
+
+      function login() {
+        let user = document.getElementById("loginUser").value;
+        let pass = document.getElementById("loginPass").value;
+
+        let acc = JSON.parse(localStorage.getItem("account"));
+
+        if (user === acc.username && pass === acc.password) {
+          localStorage.setItem("isLogin", true);
+
+          Swal.fire("Login Success ✅", "", "success");
+          checkSecuritySetup();
+          showHome();
+        } else {
+          Swal.fire("Error ❌", "Invalid credentials", "error");
+        }
+      }
+    </script>
+    <script>
+      async function updateCount() {
+        let snapshot = await db.collection("users").get();
+        document.getElementById("totalUsers").innerText = snapshot.size;
+      }
+
+      function toggleTheme() {
+        document.body.classList.toggle("dark");
+      }
+
+      function changeName() {
+        localStorage.removeItem("userName");
+        askName(); // same popup dubara open hoga
+      }
+    </script>
+    <script>
+      function showToast() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          background: "rgba(0,0,0,0.7)",
+          color: "#fff",
+        });
+
+        Toast.fire({
+          icon: "success",
+          title: "Action completed successfully ✅",
+        });
+      }
+    </script>
+    <script>
+      function showLoader() {
+        Swal.fire({
+          title: "Processing...",
+          text: "Please wait ⏳",
+          allowOutsideClick: false,
+          background: "rgba(255,255,255,0.1)",
+          color: "#fff",
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Fake delay (demo ke liye)
+        setTimeout(() => {
+          Swal.fire({
+            title: "Done ✅",
+            text: "Process completed successfully!",
+            icon: "success",
+          });
+        }, 3000);
+      }
+    </script>
+    <script>
+      function showAlert() {
+        Swal.fire({
+          title: "Success 🎉",
+          text: "Button clicked successfully!",
+          icon: "success",
+          showClass: {
+            popup: "animate__animated animate__zoomIn",
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOut",
+          },
+        });
+      }
+
+      function confirmDelete() {
+        Swal.fire({
+          title: "Delete Item?",
+          text: "This action cannot be undone!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, Delete",
+          cancelButtonText: "Cancel",
+          showClass: {
+            popup: "animate__animated animate__zoomIn",
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Deleted ✅",
+              text: "Your file has been removed.",
+              icon: "success",
+              showClass: {
+                popup: "animate__animated animate__bounceIn",
+              },
+            });
+          }
+        });
+      }
+    </script>
+    <script>
+      function openImage(src) {
+        Swal.fire({
+          imageUrl: src,
+          imageWidth: 400,
+          imageAlt: "Uploaded Image",
+        });
+      }
+
+      async function exportData() {
+        let snapshot = await db.collection("users").get();
+
+        let data = [];
+
+        snapshot.forEach((doc) => {
+          data.push({ id: doc.id, ...doc.data() });
+        });
+
+        let blob = new Blob([JSON.stringify(data, null, 2)], {
+          type: "application/json",
+        });
+
+        let a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "users.json";
+        a.click();
+      }
+
+      function showForm() {
+        document.getElementById("home").style.display = "none";
+        document.getElementById("listContainer").style.display = "none"; // add this
+        document.getElementById("formContainer").style.display = "block";
+      }
+
+      function showList() {
+        document.getElementById("home").style.display = "none";
+        document.getElementById("listContainer").style.display = "block";
+        loadData();
+      }
+
+      function goHome() {
+        document.getElementById("home").style.display = "block";
+        document.getElementById("formContainer").style.display = "none";
+        document.getElementById("listContainer").style.display = "none";
+        document.getElementById("imageContainer").style.display = "none";
+      }
+
+      async function saveData() {
+        let data = {
+          name: document.getElementById("name").value,
+          age: document.getElementById("age").value,
+          about: document.getElementById("about").value,
+          phone: document.getElementById("phone").value,
+          address: document.getElementById("address").value,
+          email: document.getElementById("email").value,
+        };
+
+        Swal.fire({
+          title: "Saving...",
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading(),
+        });
+
+        if (editId) {
+          await db.collection("users").doc(editId).update(data);
+          editId = null;
+        } else {
+          await db.collection("users").add(data);
+        }
+
+        Swal.fire({
+          title: "Saved ✅",
+          text: "Data Firebase me save ho gaya",
           icon: "success",
         });
-      }, 3000);
-    }
-  </script>
-  <script>
-    function showAlert() {
-      Swal.fire({
-        title: "Success 🎉",
-        text: "Button clicked successfully!",
-        icon: "success",
-        showClass: {
-          popup: "animate__animated animate__zoomIn",
-        },
-        hideClass: {
-          popup: "animate__animated animate__fadeOut",
-        },
-      });
-    }
 
-    function confirmDelete() {
-      Swal.fire({
-        title: "Delete Item?",
-        text: "This action cannot be undone!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, Delete",
-        cancelButtonText: "Cancel",
-        showClass: {
-          popup: "animate__animated animate__zoomIn",
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "Deleted ✅",
-            text: "Your file has been removed.",
-            icon: "success",
-            showClass: {
-              popup: "animate__animated animate__bounceIn",
-            },
-          });
-        }
-      });
-    }
-  </script>
-  <script>
-    function openImage(src) {
-      Swal.fire({
-        imageUrl: src,
-        imageWidth: 400,
-        imageAlt: "Uploaded Image",
-      });
-    }
+        loadData(); // 🔥 important
+      }
 
-    async function exportData() {
+      async function loadData() {
+        let snapshot = await db.collection("users").get();
 
-  let snapshot = await db.collection("users").get();
+        let html = "";
 
-  let data = [];
+        snapshot.forEach((docu) => {
+          let d = docu.data();
+          let id = docu.id;
 
-  snapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data() });
-  });
-
-  let blob = new Blob([JSON.stringify(data, null, 2)], {
-    type: "application/json",
-  });
-
-  let a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "users.json";
-  a.click();
-}
-
-    function showForm() {
-      document.getElementById("home").style.display = "none";
-      document.getElementById("listContainer").style.display = "none"; // add this
-      document.getElementById("formContainer").style.display = "block";
-    }
-
-    function showList() {
-      document.getElementById("home").style.display = "none";
-      document.getElementById("listContainer").style.display = "block";
-      loadData();
-    }
-
-    function goHome() {
-      document.getElementById("home").style.display = "block";
-      document.getElementById("formContainer").style.display = "none";
-      document.getElementById("listContainer").style.display = "none";
-      document.getElementById("imageContainer").style.display = "none";
-    }
-
-    async function saveData() {
-
-  let data = {
-    name: document.getElementById("name").value,
-    age: document.getElementById("age").value,
-    about: document.getElementById("about").value,
-    phone: document.getElementById("phone").value,
-    address: document.getElementById("address").value,
-    email: document.getElementById("email").value,
-  };
-
-  Swal.fire({
-    title: "Saving...",
-    allowOutsideClick: false,
-    didOpen: () => Swal.showLoading(),
-  });
-
-  
-  if (editId) {
-  await db.collection("users").doc(editId).update(data);
-  editId = null;
-} else {
-  await db.collection("users").add(data);
-}
-
-  Swal.fire({
-    title: "Saved ✅",
-    text: "Data Firebase me save ho gaya",
-    icon: "success",
-  });
-
-  loadData(); // 🔥 important
-}
-
-    async function loadData() {
-
-  let snapshot = await db.collection("users").get();
-
-  let html = "";
-
-  snapshot.forEach((docu) => {
-    let d = docu.data();
-    let id = docu.id;
-
-    html += `
+          html += `
       <div style="margin:10px;padding:15px;background:rgba(255,255,255,0.1);border-radius:15px;text-align:left;">
 
         <h3>${d.name} (${d.age})</h3>
@@ -1141,252 +1168,252 @@
 
       </div>
     `;
-  });
+        });
 
-  document.getElementById("dataList").innerHTML =
-    html || "<i class='fa-solid fa-face-sad-tear'></i> No Data Found";
-}
+        document.getElementById("dataList").innerHTML =
+          html || "<i class='fa-solid fa-face-sad-tear'></i> No Data Found";
+      }
 
-    
-
-async function deleteData(id) {
-  Swal.fire({
-    title: "Delete this record?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Yes, Delete",
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      await db.collection("users").doc(id).delete();
-      loadData();
-      Swal.fire("Deleted!", "", "success");
-    }
-  });
-}
-
-    let editIndex = -1;
-    let editId = null;
-
-    async function editData(id) {
-
-  let docSnap = await db.collection("users").doc(id).get();
-  let d = docSnap.data();
-
-  document.getElementById("name").value = d.name;
-  document.getElementById("age").value = d.age;
-  document.getElementById("about").value = d.about;
-  document.getElementById("phone").value = d.phone;
-  document.getElementById("address").value = d.address;
-  document.getElementById("email").value = d.email;
-
-  editId = id;
-
-  document.getElementById("listContainer").style.display = "none";
-
-  document.getElementById("saveBtn").innerHTML =
-    '<i class="fa-solid fa-pen"></i> Update';
-
-  showForm();
-}
-
-    function askName() {
-      let oldName = localStorage.getItem("userName") || "";
-
-      Swal.fire({
-        title: `Hii <i class="fa-solid fa-face-smile" style="font-size:40px;color:white"></i>`,
-        input: "text",
-        inputPlaceholder: "Enter your name",
-        showCancelButton: true,
-        confirmButtonText: "Save",
-        cancelButtonText: "Go Back",
-        allowOutsideClick: false,
-
-        didOpen: () => {
-          if (oldName) {
-            document.querySelector(".swal2-input").value = oldName;
+      async function deleteData(id) {
+        Swal.fire({
+          title: "Delete this record?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, Delete",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            await db.collection("users").doc(id).delete();
+            loadData();
+            Swal.fire("Deleted!", "", "success");
           }
-        },
+        });
+      }
 
-        preConfirm: (name) => {
-          if (!name) {
-            Swal.showValidationMessage("Please enter your name");
+      let editIndex = -1;
+      let editId = null;
+
+      async function editData(id) {
+        let docSnap = await db.collection("users").doc(id).get();
+        let d = docSnap.data();
+
+        document.getElementById("name").value = d.name;
+        document.getElementById("age").value = d.age;
+        document.getElementById("about").value = d.about;
+        document.getElementById("phone").value = d.phone;
+        document.getElementById("address").value = d.address;
+        document.getElementById("email").value = d.email;
+
+        editId = id;
+
+        document.getElementById("listContainer").style.display = "none";
+
+        document.getElementById("saveBtn").innerHTML =
+          '<i class="fa-solid fa-pen"></i> Update';
+
+        showForm();
+      }
+
+      function askName() {
+        let oldName = localStorage.getItem("userName") || "";
+
+        Swal.fire({
+          title: `Hii <i class="fa-solid fa-face-smile" style="font-size:40px;color:white"></i>`,
+          input: "text",
+          inputPlaceholder: "Enter your name",
+          showCancelButton: true,
+          confirmButtonText: "Save",
+          cancelButtonText: "Go Back",
+          allowOutsideClick: false,
+
+          didOpen: () => {
+            if (oldName) {
+              document.querySelector(".swal2-input").value = oldName;
+            }
+          },
+
+          preConfirm: (name) => {
+            if (!name) {
+              Swal.showValidationMessage("Please enter your name");
+            }
+            return name;
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            let name = result.value;
+
+            localStorage.setItem("userName", name);
+            document.getElementById("userName").innerText = name;
+
+            Swal.fire("Welcome 🎉", `Hello ${name}!`, "success");
           }
-          return name;
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-          let name = result.value;
+        });
+      }
 
-          localStorage.setItem("userName", name);
-          document.getElementById("userName").innerText = name;
+      // window.onload = function () {
+      //   let savedName = localStorage.getItem("userName");
 
-          Swal.fire("Welcome 🎉", `Hello ${name}!`, "success");
-        }
-      });
-    }
-
-    // window.onload = function () {
-    //   let savedName = localStorage.getItem("userName");
-
-    //   if (savedName) {
-    //     document.getElementById("userName").innerText = savedName;
-    //   } else {
-    //     askName();
-    //   }
-    // };
-  </script>
-  <!-- IMAGE CONTAINER -->
-  <div class="container" id="imageContainer" style="display: none">
-    <h1>Image Upload</h1>
-    <input accept="image/*" class="btn" id="imgInput" type="file" /><br />
-    <img id="imgPreview" style="
+      //   if (savedName) {
+      //     document.getElementById("userName").innerText = savedName;
+      //   } else {
+      //     askName();
+      //   }
+      // };
+    </script>
+    <!-- IMAGE CONTAINER -->
+    <div class="container" id="imageContainer" style="display: none">
+      <h1>Image Upload</h1>
+      <input accept="image/*" class="btn" id="imgInput" type="file" /><br />
+      <img
+        id="imgPreview"
+        style="
           width: 100%;
           max-height: 220px;
           object-fit: cover;
           border-radius: 10px;
           display: none;
           margin-top: 10px;
-        " />
-    <button class="btn success-btn" onclick="saveImage()">Save Image</button>
-    <button class="btn success-btn" onclick="loadImages()">
-      View Images
-    </button>
-    <button class="btn danger-btn" onclick="goHome()">Go Back</button>
-    <div id="imageList"></div>
-  </div>
-  <script>
-    let imgEditIndex = -1;
+        "
+      />
+      <button class="btn success-btn" onclick="saveImage()">Save Image</button>
+      <button class="btn success-btn" onclick="loadImages()">
+        View Images
+      </button>
+      <button class="btn danger-btn" onclick="goHome()">Go Back</button>
+      <div id="imageList"></div>
+    </div>
+    <script>
+      let imgEditIndex = -1;
 
-    // open image section
-    function showImageForm() {
-      document.getElementById("home").style.display = "none";
-      document.getElementById("formContainer").style.display = "none";
-      document.getElementById("listContainer").style.display = "none";
-      document.getElementById("imageContainer").style.display = "block";
-    }
+      // open image section
+      function showImageForm() {
+        document.getElementById("home").style.display = "none";
+        document.getElementById("formContainer").style.display = "none";
+        document.getElementById("listContainer").style.display = "none";
+        document.getElementById("imageContainer").style.display = "block";
+      }
 
-    // preview image
-    document.addEventListener("change", function (e) {
-      if (e.target && e.target.id === "imgInput") {
-        let file = e.target.files[0];
-        if (file) {
-          let reader = new FileReader();
-          reader.onload = function (ev) {
-            let img = document.getElementById("imgPreview");
-            img.src = ev.target.result;
-            img.style.display = "block";
-          };
-          reader.readAsDataURL(file);
+      // preview image
+      document.addEventListener("change", function (e) {
+        if (e.target && e.target.id === "imgInput") {
+          let file = e.target.files[0];
+          if (file) {
+            let reader = new FileReader();
+            reader.onload = function (ev) {
+              let img = document.getElementById("imgPreview");
+              img.src = ev.target.result;
+              img.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+          }
         }
-      }
-    });
+      });
 
-    // save image
-    function saveImage() {
-      let file = document.getElementById("imgInput").files[0];
-      if (!file) {
-        alert("Select image");
-        return;
+      // save image
+      function saveImage() {
+        let file = document.getElementById("imgInput").files[0];
+        if (!file) {
+          alert("Select image");
+          return;
+        }
+
+        let reader = new FileReader();
+        reader.onload = function (e) {
+          let imgData = e.target.result;
+          let all = JSON.parse(localStorage.getItem("images")) || [];
+
+          if (imgEditIndex >= 0) {
+            all[imgEditIndex] = imgData;
+            imgEditIndex = -1;
+          } else {
+            all.push(imgData);
+          }
+
+          localStorage.setItem("images", JSON.stringify(all));
+          loadImages();
+        };
+        reader.readAsDataURL(file);
       }
 
-      let reader = new FileReader();
-      reader.onload = function (e) {
-        let imgData = e.target.result;
+      // load images
+      function loadImages() {
         let all = JSON.parse(localStorage.getItem("images")) || [];
+        let html = "";
 
-        if (imgEditIndex >= 0) {
-          all[imgEditIndex] = imgData;
-          imgEditIndex = -1;
-        } else {
-          all.push(imgData);
-        }
-
-        localStorage.setItem("images", JSON.stringify(all));
-        loadImages();
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // load images
-    function loadImages() {
-      let all = JSON.parse(localStorage.getItem("images")) || [];
-      let html = "";
-
-      all.forEach((img, i) => {
-        html += `
+        all.forEach((img, i) => {
+          html += `
           <div style="margin:10px;padding:10px;background:rgba(255,255,255,0.1);border-radius:10px;">
             <img src="${img}" style="width:100%;height:200px;object-fit:cover;border-radius:10px;" onclick="openImage('${img}')">
             <br>
             <button class="btn success-btn" onclick="editImage(${i})">Edit</button>
             <button class="btn danger-btn" onclick="deleteImage(${i})">Delete</button>
           </div>`;
-      });
-
-      document.getElementById("imageList").innerHTML = html || "No Images";
-    }
-
-    // edit image
-    function editImage(i) {
-      let all = JSON.parse(localStorage.getItem("images")) || [];
-      document.getElementById("imgPreview").src = all[i];
-      document.getElementById("imgPreview").style.display = "block";
-      imgEditIndex = i;
-    }
-
-    // delete image
-    function deleteImage(i) {
-      let all = JSON.parse(localStorage.getItem("images")) || [];
-      all.splice(i, 1);
-      localStorage.setItem("images", JSON.stringify(all));
-      loadImages();
-    }
-
-    // open full image
-    function openImage(src) {
-      let win = window.open("");
-      win.document.write('<img src="' + src + '" style="width:100%">');
-    }
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      let name = localStorage.getItem("userName") || "Guest";
-      setTimeout(() => {
-        Swal.fire({
-          title: `Hii ${name} <i class="fa-solid fa-face-smile" style="font-size:40px;color:white"></i>`,
-          // html: "",
-          background: "rgba(0,0,0,0.7)",
-          color: "#fff",
-          showClass: { popup: "animate__animated animate__zoomIn" },
         });
-      }, 500);
-    });
-  </script>
-  <script>
-    function magicDrop() {
-      let buttons = document.querySelectorAll("#home .btn:not(#magicBtn)");
 
-      buttons.forEach((btn, i) => {
+        document.getElementById("imageList").innerHTML = html || "No Images";
+      }
+
+      // edit image
+      function editImage(i) {
+        let all = JSON.parse(localStorage.getItem("images")) || [];
+        document.getElementById("imgPreview").src = all[i];
+        document.getElementById("imgPreview").style.display = "block";
+        imgEditIndex = i;
+      }
+
+      // delete image
+      function deleteImage(i) {
+        let all = JSON.parse(localStorage.getItem("images")) || [];
+        all.splice(i, 1);
+        localStorage.setItem("images", JSON.stringify(all));
+        loadImages();
+      }
+
+      // open full image
+      function openImage(src) {
+        let win = window.open("");
+        win.document.write('<img src="' + src + '" style="width:100%">');
+      }
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let name = localStorage.getItem("userName") || "Guest";
         setTimeout(() => {
-          btn.classList.add("fall");
-        }, i * 150);
+          Swal.fire({
+            title: `Hii ${name} <i class="fa-solid fa-face-smile" style="font-size:40px;color:white"></i>`,
+            // html: "",
+            background: "rgba(0,0,0,0.7)",
+            color: "#fff",
+            showClass: { popup: "animate__animated animate__zoomIn" },
+          });
+        }, 500);
       });
-    }
-  </script>
-  <script>
-    function openChat() {
-      document.getElementById("home").style.display = "none";
-      document.getElementById("chatContainer").style.display = "block";
-    }
+    </script>
+    <script>
+      function magicDrop() {
+        let buttons = document.querySelectorAll("#home .btn:not(#magicBtn)");
 
-    async function sendMessage() {
-  let input = document.getElementById("chatInput");
-  let msg = input.value.trim();
-  if (!msg) return;
+        buttons.forEach((btn, i) => {
+          setTimeout(() => {
+            btn.classList.add("fall");
+          }, i * 150);
+        });
+      }
+    </script>
+    <script>
+      function openChat() {
+        document.getElementById("home").style.display = "none";
+        document.getElementById("chatContainer").style.display = "block";
+      }
 
-  let chatBox = document.getElementById("chatBox");
+      async function sendMessage() {
+        let input = document.getElementById("chatInput");
+        let msg = input.value.trim();
+        if (!msg) return;
 
-  // User message
-  chatBox.innerHTML += `
+        let chatBox = document.getElementById("chatBox");
+
+        // User message
+        chatBox.innerHTML += `
     <div style="text-align:right;margin:5px;">
       <span style="background:#DCF8C6;padding:8px 12px;border-radius:10px;">
         ${msg}
@@ -1394,125 +1421,138 @@ async function deleteData(id) {
     </div>
   `;
 
-  input.value = "";
+        input.value = "";
 
-  // Typing...
-  let typingDiv = document.createElement("div");
-  typingDiv.innerHTML = "Typing...";
-  chatBox.appendChild(typingDiv);
+        // Typing...
+        let typingDiv = document.createElement("div");
+        typingDiv.innerHTML = "Typing...";
+        chatBox.appendChild(typingDiv);
 
-  // 🤖 AI reply
-  let reply = await getBotReply(msg);
+        // 🤖 AI reply
+        let reply = await getBotReply(msg);
 
-  typingDiv.remove();
+        typingDiv.remove();
 
-  chatBox.innerHTML += `
+        chatBox.innerHTML += `
     <div style="text-align:left;margin:5px;">
       <span style="background:#fff;padding:8px 12px;border-radius:10px;">
         ${reply}
       </span>
     </div>
   `;
-}
-    async function getBotReply(msg) {
+      }
+      async function getBotReply(msg) {
+        msg = msg.toLowerCase();
 
-  msg = msg.toLowerCase();
-
-  if (msg.includes("hi") || msg.includes("hello")) {
-    return "Hello Shahbaz 👋";
-  }
-
-  if (msg.includes("time")) {
-    return "⏰ " + new Date().toLocaleTimeString();
-  }
-
-  if (msg.includes("date")) {
-    return "📅 " + new Date().toDateString();
-  }
-
-  if (msg.includes("name")) {
-    return "Mera naam Smart Bot hai 🤖";
-  }
-
-  if (msg.includes("how are you")) {
-    return "Main bilkul mast hoon 😎 tum batao?";
-  }
-
-  if (msg.includes("bye")) {
-    return "Bye Shahbaz 👋";
-  }
-
-  if (msg.includes("joke")) {
-    let jokes = [
-      "😂 Programmer aur bug best friends hote hain",
-      "🤣 Code kabhi perfect nahi hota",
-      "😆 JavaScript surprises deta rehta hai"
-    ];
-    return jokes[Math.floor(Math.random() * jokes.length)];
-  }
-
-  return "Samajh nahi aaya 😅";
-}
-    // ENTER key support
-    document
-      .getElementById("chatInput")
-      .addEventListener("keypress", function (e) {
-        if (e.key === "Enter") {
-          sendMessage();
+        if (msg.includes("hi") || msg.includes("hello")) {
+          return "Hello Shahbaz 👋";
         }
-      });
-  </script>
-  <div class="container" id="chatContainer" style="display: none; padding: 0">
-    <!-- Header -->
-    <div style="
+
+        if (msg.includes("time")) {
+          return "⏰ " + new Date().toLocaleTimeString();
+        }
+
+        if (msg.includes("date")) {
+          return "📅 " + new Date().toDateString();
+        }
+
+        if (msg.includes("name")) {
+          return "Mera naam Smart Bot hai 🤖";
+        }
+
+        if (msg.includes("how are you")) {
+          return "Main bilkul mast hoon 😎 tum batao?";
+        }
+
+        if (msg.includes("bye")) {
+          return "Bye Shahbaz 👋";
+        }
+
+        if (msg.includes("joke")) {
+          let jokes = [
+            "😂 Programmer aur bug best friends hote hain",
+            "🤣 Code kabhi perfect nahi hota",
+            "😆 JavaScript surprises deta rehta hai",
+          ];
+          return jokes[Math.floor(Math.random() * jokes.length)];
+        }
+
+        return "Samajh nahi aaya 😅";
+      }
+      // ENTER key support
+      document
+        .getElementById("chatInput")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
+        });
+    </script>
+    <div class="container" id="chatContainer" style="display: none; padding: 0">
+      <!-- Header -->
+      <div
+        style="
           background: #075e54;
           padding: 15px;
           color: #fff;
           border-radius: 20px 20px 0 0;
-        ">
-      <b>🤖 Smart Bot</b>
-    </div>
-    <!-- Chat area -->
-    <div id="chatBox" style="
+        "
+      >
+        <b>🤖 Smart Bot</b>
+      </div>
+      <!-- Chat area -->
+      <div
+        id="chatBox"
+        style="
           height: 300px;
           overflow-y: auto;
           padding: 10px;
           background: #ece5dd;
           color: #555555;
-        "></div>
-    <!-- Input -->
-    <div style="
+        "
+      ></div>
+      <!-- Input -->
+      <div
+        style="
           display: flex;
           padding: 10px;
           background: #f0f0f0;
           border-radius: 0 0 20px 20px;
-        ">
-      <input id="chatInput" placeholder="Type a message" style="
+        "
+      >
+        <input
+          id="chatInput"
+          placeholder="Type a message"
+          style="
             flex: 1;
             padding: 10px;
             border-radius: 20px;
             border: none;
             outline: none;
-          " type="text" />
-      <button onclick="sendMessage()" style="
+          "
+          type="text"
+        />
+        <button
+          onclick="sendMessage()"
+          style="
             margin-left: 10px;
             background: #25d366;
             border: none;
             color: #fff;
             padding: 10px 15px;
             border-radius: 50%;
-          ">
-        ➤
-      </button>
+          "
+        >
+          ➤
+        </button>
+      </div>
     </div>
-  </div>
-  <script>
-    window.addEventListener("load", function () {
-      if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark");
-      }
-    });
-  </script>
-</body>
-
+    <script>
+      window.addEventListener("load", function () {
+        if (localStorage.getItem("theme") === "dark") {
+          document.body.classList.add("dark");
+        }
+      });
+    </script>
+  </body>
 </html>
