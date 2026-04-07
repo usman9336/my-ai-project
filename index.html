@@ -607,6 +607,34 @@
 #goldenToggle:checked ~ label .on-text {
   color: #ffd700;
 }
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.toggle-box {
+  text-align: center;
+}
+
+/* TITLE */
+.toggle-title {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* mode ke hisab se color */
+body.dark .toggle-title {
+  color: #ddd;
+}
+
+body.golden .toggle-title {
+  color: #ffd700;
+}
   </style>
 
   <style>
@@ -1133,24 +1161,24 @@
     <h3 id="greeting"></h3>
     <h4 id="clock"></h4>
 
-    <div class="toggle-container">
 
- <!-- DARK -->
+   <div class="toggle-container">
+
+  <!-- DARK -->
+  <div class="toggle-box">
+    <p class="toggle-title">🌙 Dark Mode</p>
+
     <div class="switch">
-      <input type="checkbox" id="darkToggle" onclick="
-            toggleTheme();
-            updateDarkText();
-          " />
+      <input type="checkbox" id="darkToggle" onclick="toggleTheme(); updateDarkText();" />
       <label for="darkToggle">
         <span class="switch-text on-text">ON</span>
-  <span class="switch-text off-text">OFF</span>
+        <span class="switch-text off-text">OFF</span>
+
         <i class="bulb">
           <span class="bulb-center"></span>
           <span class="filament-1"></span>
           <span class="filament-2"></span>
-          <span class="reflections">
-            <span></span>
-          </span>
+          <span class="reflections"><span></span></span>
           <span class="sparks">
             <i class="spark1"></i>
             <i class="spark2"></i>
@@ -1160,38 +1188,23 @@
         </i>
       </label>
     </div>
+  </div>
 
-    <!-- <div class="neo-toggle">
-        <input
-          type="checkbox"
-          id="darkToggle"
-          onclick="
-            toggleTheme();
-            updateDarkText();
-          "
-        />
-        <label for="darkToggle" class="neo-slider dark-slider">
-          <span class="text-on">DARK</span>
-          <span class="text-off">LIGHT</span>
-        </label>
-      </div> -->
+  <!-- GOLDEN -->
+  <div class="toggle-box">
+    <p class="toggle-title">✨ Golden Theme</p>
 
-      <!-- GOLDEN -->
     <div class="switch">
-      <input type="checkbox" id="goldenToggle" onchange="
-            toggleGolden();
-            updateGoldenText();
-          " />
+      <input type="checkbox" id="goldenToggle" onchange="toggleGolden(); updateGoldenText();" />
       <label for="goldenToggle">
         <span class="switch-text on-text">ON</span>
-  <span class="switch-text off-text">OFF</span>
+        <span class="switch-text off-text">OFF</span>
+
         <i class="bulb">
           <span class="bulb-center"></span>
           <span class="filament-1"></span>
           <span class="filament-2"></span>
-          <span class="reflections">
-            <span></span>
-          </span>
+          <span class="reflections"><span></span></span>
           <span class="sparks">
             <i class="spark1"></i>
             <i class="spark2"></i>
@@ -1201,22 +1214,9 @@
         </i>
       </label>
     </div>
+  </div>
 
-    <!-- <div class="neo-toggle">
-        <input
-          type="checkbox"
-          id="goldenToggle"
-          onchange="
-            toggleGolden();
-            updateGoldenText();
-          "
-        />
-        <label for="goldenToggle" class="neo-slider golden-slider">
-          <span class="text-on">GOLDEN</span>
-          <span class="text-off"></span>
-        </label>
-      </div> -->
-    </div>
+</div>
 
     <button class="btn" onclick="changeBg()">🎨 Change Theme</button>
 
